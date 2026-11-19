@@ -326,9 +326,47 @@ footer .envoltura{display:flex;justify-content:space-between;gap:24px;flex-wrap:
 footer a{color:#fff}
 .wa-fija{display:none}
 
+
+/* ===== Órbita: NadIA conecta todo ===== */
+.orbita{position:relative;justify-self:center;width:min(100%,540px)}
+.orbita-svg{width:100%;height:auto;overflow:visible}
+.ob-anillo{transform-origin:300px 300px;animation:ob-girar 60s linear infinite}
+.ob-anillo2{transform-origin:300px 300px;animation:ob-girar 90s linear infinite reverse}
+.ob-radio{animation:ob-fluir 1.2s linear infinite}
+.ob-nombre{font:600 22px var(--f);fill:#fff;letter-spacing:-.01em}
+.ob-ia{fill:#E07AE6}
+.ob-pulso{transform-origin:300px 300px;animation:ob-pulso 1.8s ease-out infinite;animation-delay:0.9s;opacity:0}
+.ob-pulso2{animation-delay:1.25s}
+.ob-mod-fondo{fill:#2A0730;stroke:rgba(209,118,215,.38);stroke-width:1.5;transition:fill .3s}
+.ob-mod-icono{color:#E2D0E3}
+.ob-mod-nombre{font:500 17px var(--f);fill:#D8C2D9}
+.ob-mod .ob-mod-fondo{animation:ob-fondo 14.4s infinite;animation-delay:inherit}
+.ob-mod .ob-mod-icono{animation:ob-icono 14.4s infinite;animation-delay:inherit}
+.ob-mod .ob-mod-nombre{animation:ob-texto 14.4s infinite;animation-delay:inherit}
+@keyframes ob-fondo{0%{fill:#5A0F62;stroke:#E07AE6;stroke-width:3}12.50%{fill:#5A0F62;stroke:#E07AE6;stroke-width:3}14.50%,100%{fill:#2A0730;stroke:rgba(209,118,215,.38);stroke-width:1.5}}
+@keyframes ob-icono{0%,12.50%{color:#fff}14.50%,100%{color:#E2D0E3}}
+@keyframes ob-texto{0%,12.50%{fill:#fff}14.50%,100%{fill:#D8C2D9}}
+@keyframes ob-girar{to{transform:rotate(360deg)}}
+@keyframes ob-fluir{to{stroke-dashoffset:-20}}
+@keyframes ob-pulso{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.45);opacity:0}}
+.orbita-pasos{list-style:none;margin:0 auto;padding:0;position:relative;height:3.2em;max-width:30ch;text-align:center}
+.orbita-pasos li{position:absolute;inset:0;opacity:0;color:#F7E6F8;font-size:1.05rem;line-height:1.4;animation:ob-paso 14.4s infinite both}
+.orbita-pasos b{display:block;font-size:.78rem;letter-spacing:.1em;color:var(--marca-claro);font-weight:600}
+@keyframes ob-paso{0%{opacity:0;transform:translateY(6px)}1.5%,11.50%{opacity:1;transform:none}12.50%,100%{opacity:0;transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){
+  .ob-anillo,.ob-anillo2,.ob-radio,.ob-pulso,.ob-mod .ob-mod-fondo,.ob-mod .ob-mod-icono,.ob-mod .ob-mod-nombre{animation:none!important}
+  .ob-paquete{display:none}
+  .orbita-pasos li{animation:none;opacity:0}
+  .orbita-pasos li:first-child{opacity:1}
+}
+
+.nadia-rejilla{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.nadia-rejilla>*{min-width:0}
+.nadia .preguntas-nadia{max-width:none}
+
 /* ================= Responsivo ================= */
 @media (max-width:960px){
-  .hero-rejilla,.caso-rejilla,.recorrido,.negocio,.faq-rejilla{grid-template-columns:1fr}
+  .hero-rejilla,.caso-rejilla,.nadia-rejilla,.recorrido,.negocio,.faq-rejilla{grid-template-columns:1fr}
   .telefono{transform:none}
   .tirillas{grid-template-columns:1fr;max-width:440px}
   .tirilla.destacada{transform:none}
@@ -413,22 +451,109 @@ footer a{color:#fff}
         <p class="desde">Planes desde <b>$30.000 al mes</b>. Factura electrónica a <b>$200</b> cada una.</p>
       </div>
 
-      <div class="telefono" aria-label="Ejemplo de conversación con NadIA">
-        <div class="pantalla">
-          <div class="chat-cabeza">
-            <svg class="isotipo" aria-hidden="true"><use href="#isotipo-claro"/></svg>
-            <div><b>NadIA</b><small><span class="en-linea"></span>en línea</small></div>
-          </div>
-          <div class="chat" id="chat">
-            <div class="msj yo">NadIA, ¿cómo vamos hoy?<span class="hora">11:42</span></div>
-            <div class="msj ella">Llevas <mark>$1.284.000</mark> en 63 ventas, 12 % más que el viernes pasado. La de carne va de primera.<span class="hora">11:42</span></div>
-            <div class="msj yo"><span class="adjunto"><i></i>factura_proveedor.pdf</span>Llegó la factura del proveedor<span class="hora">11:45</span></div>
-            <div class="msj ella">Listo, la leí: $412.000 con IVA de $65.782. La dejé como costo y sumé 200 empanadas al inventario.<span class="hora">11:45</span></div>
-            <div class="escribiendo" id="escribiendo" aria-hidden="true"><span></span><span></span><span></span></div>
-          </div>
-          <div class="chat-pie" aria-hidden="true"><div>Escríbele a NadIA…</div><i></i></div>
-        </div>
-      </div>
+      <figure class="orbita" aria-label="Así funciona Agente NadIA">
+      <svg class="orbita-svg" viewBox="0 0 600 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="orbita-t orbita-d">
+      <title id="orbita-t">Todo tu negocio conectado con NadIA</title>
+      <desc id="orbita-d">NadIA en el centro conecta mostrador, tienda en línea, pedidos, domicilios, inventario, factura DIAN, gastos y finanzas.</desc>
+      <defs>
+        <radialGradient id="ob-halo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#AC00B8" stop-opacity=".55"/><stop offset="1" stop-color="#AC00B8" stop-opacity="0"/></radialGradient>
+        <linearGradient id="ob-deg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B2BD9"/><stop offset="1" stop-color="#AC00B8"/></linearGradient>
+        <filter id="ob-brillo" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <symbol id="ob-caja" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g></symbol>
+        <symbol id="ob-tienda" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18l-1.5 11h-15Z"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/></g></symbol>
+        <symbol id="ob-pedidos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></g></symbol>
+        <symbol id="ob-domicilio" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 18h7M3 6h10v9M13 9h4l3 4v2"/></g></symbol>
+        <symbol id="ob-inventario" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="m3 8 9 5 9-5M12 13v8"/></g></symbol>
+        <symbol id="ob-factura" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="m9 15 2 2 4-4"/></g></symbol>
+        <symbol id="ob-gastos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3v12H4Z"/><circle cx="12" cy="13" r="3.5"/></g></symbol>
+        <symbol id="ob-finanzas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
+      </defs>
+      <circle cx="300" cy="300" r="190" fill="url(#ob-halo)" opacity=".55"/>
+      <circle class="ob-anillo" cx="300" cy="300" r="205" fill="none" stroke="#A8C7AD" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="2 10"/>
+      <circle class="ob-anillo2" cx="300" cy="300" r="143" fill="none" stroke="#D176D7" stroke-opacity=".18" stroke-width="1" stroke-dasharray="1 7"/>
+      <path id="ob-in-0" class="ob-radio" d="M300 137 L300 220" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-0" d="M356.6 243.4 L415.3 184.7" fill="none" stroke="none"/>
+      <path id="ob-in-1" class="ob-radio" d="M415.3 184.7 L356.6 243.4" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-1" d="M380 300 L463 300" fill="none" stroke="none"/>
+      <path id="ob-in-2" class="ob-radio" d="M463 300 L380 300" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-2" d="M356.6 356.6 L415.3 415.3" fill="none" stroke="none"/>
+      <path id="ob-in-3" class="ob-radio" d="M415.3 415.3 L356.6 356.6" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-3" d="M300 380 L300 463" fill="none" stroke="none"/>
+      <path id="ob-in-4" class="ob-radio" d="M300 463 L300 380" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-4" d="M243.4 356.6 L184.7 415.3" fill="none" stroke="none"/>
+      <path id="ob-in-5" class="ob-radio" d="M184.7 415.3 L243.4 356.6" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-5" d="M220 300 L137 300" fill="none" stroke="none"/>
+      <path id="ob-in-6" class="ob-radio" d="M137 300 L220 300" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-6" d="M243.4 243.4 L184.7 184.7" fill="none" stroke="none"/>
+      <path id="ob-in-7" class="ob-radio" d="M184.7 184.7 L243.4 243.4" fill="none" stroke="#D176D7" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="4 6"/>
+      <path id="ob-out-7" d="M300 220 L300 137" fill="none" stroke="none"/>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="0s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-0"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="0s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="0.9s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-0"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="0.9s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="1.8s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-1"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="1.8s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="2.7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-1"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="2.7s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="3.6s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-2"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="3.6s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="4.5s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-2"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="4.5s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="5.4s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-3"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="5.4s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="6.3s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-3"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="6.3s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="7.2s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-4"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="7.2s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="8.1s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-4"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="8.1s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="9s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-5"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="9s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="9.9s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-5"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="9.9s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="10.8s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-6"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="10.8s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="11.7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-6"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="11.7s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#F0CEF2" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="12.6s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-in-7"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="12.6s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <circle class="ob-paquete" r="5" fill="#A8C7AD" filter="url(#ob-brillo)" opacity="0"><animateMotion dur="14.4s" begin="13.5s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.0625;1" calcMode="linear"><mpath href="#ob-out-7"/></animateMotion><animate attributeName="opacity" dur="14.4s" begin="13.5s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.0563;0.0625;1"/></circle>
+      <g class="ob-centro">
+        <circle class="ob-pulso" cx="300" cy="300" r="78" fill="none" stroke="url(#ob-deg)" stroke-width="3"/>
+        <circle class="ob-pulso ob-pulso2" cx="300" cy="300" r="78" fill="none" stroke="url(#ob-deg)" stroke-width="2"/>
+        <circle cx="300" cy="300" r="78" fill="#2A0730" stroke="url(#ob-deg)" stroke-width="3"/>
+        <circle cx="300" cy="286" r="38" fill="#FFFFFF"/>
+        <svg x="268" y="254" width="64" height="64" viewBox="0 0 120 120"><path d="M 42.2 88.6 A 38 38 0 1 0 27.1 74.0 L 17 106 Z" fill="none" stroke="url(#ob-deg)" stroke-width="13" stroke-linejoin="round" stroke-linecap="round"/><polyline points="40,56 53,69 79,42" fill="none" stroke="#235430" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="82.2" y1="92.5" x2="83.2" y2="98.0" stroke="url(#ob-deg)" stroke-width="4.4" stroke-linecap="round"/><circle cx="83.8" cy="104.5" r="6.2" fill="none" stroke="url(#ob-deg)" stroke-width="4.4"/></svg>
+        <text x="300" y="350" text-anchor="middle" class="ob-nombre">Nad<tspan class="ob-ia">IA</tspan></text>
+      </g>
+      <g class="ob-mod" style="animation-delay:0s">
+        <circle class="ob-mod-fondo" cx="300" cy="95" r="38"/>
+        <use href="#ob-caja" x="285" y="80" width="30" height="30" class="ob-mod-icono"/>
+        <text x="300" y="43" text-anchor="middle" class="ob-mod-nombre">Mostrador</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:1.8s">
+        <circle class="ob-mod-fondo" cx="445" cy="155" r="38"/>
+        <use href="#ob-tienda" x="430" y="140" width="30" height="30" class="ob-mod-icono"/>
+        <text x="445" y="221" text-anchor="middle" class="ob-mod-nombre">Tienda en línea</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:3.6s">
+        <circle class="ob-mod-fondo" cx="505" cy="300" r="38"/>
+        <use href="#ob-pedidos" x="490" y="285" width="30" height="30" class="ob-mod-icono"/>
+        <text x="505" y="366" text-anchor="middle" class="ob-mod-nombre">Pedidos</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:5.4s">
+        <circle class="ob-mod-fondo" cx="445" cy="445" r="38"/>
+        <use href="#ob-domicilio" x="430" y="430" width="30" height="30" class="ob-mod-icono"/>
+        <text x="445" y="511" text-anchor="middle" class="ob-mod-nombre">Domicilios</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:7.2s">
+        <circle class="ob-mod-fondo" cx="300" cy="505" r="38"/>
+        <use href="#ob-inventario" x="285" y="490" width="30" height="30" class="ob-mod-icono"/>
+        <text x="300" y="571" text-anchor="middle" class="ob-mod-nombre">Inventario</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:9s">
+        <circle class="ob-mod-fondo" cx="155" cy="445" r="38"/>
+        <use href="#ob-factura" x="140" y="430" width="30" height="30" class="ob-mod-icono"/>
+        <text x="155" y="511" text-anchor="middle" class="ob-mod-nombre">Factura DIAN</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:10.8s">
+        <circle class="ob-mod-fondo" cx="95" cy="300" r="38"/>
+        <use href="#ob-gastos" x="80" y="285" width="30" height="30" class="ob-mod-icono"/>
+        <text x="95" y="366" text-anchor="middle" class="ob-mod-nombre">Gastos</text>
+      </g>
+      <g class="ob-mod" style="animation-delay:12.6s">
+        <circle class="ob-mod-fondo" cx="155" cy="155" r="38"/>
+        <use href="#ob-finanzas" x="140" y="140" width="30" height="30" class="ob-mod-icono"/>
+        <text x="155" y="221" text-anchor="middle" class="ob-mod-nombre">Finanzas</text>
+      </g>
+      </svg>
+      <ol class="orbita-pasos" aria-hidden="true"><li style="animation-delay:0s"><b>01</b>Vendes en el local: mesa, barra o para llevar</li><li style="animation-delay:1.8s"><b>02</b>…y por internet, con tu catálogo en línea</li><li style="animation-delay:3.6s"><b>03</b>Cada pedido entra ordenado, con cliente y dirección</li><li style="animation-delay:5.4s"><b>04</b>La ruta sale con un botón y la entrega queda con foto</li><li style="animation-delay:7.2s"><b>05</b>El inventario se descuenta solo con cada venta</li><li style="animation-delay:9s"><b>06</b>La factura electrónica sale aceptada por la DIAN</li><li style="animation-delay:10.8s"><b>07</b>Le mandas la factura del proveedor y NadIA la registra</li><li style="animation-delay:12.6s"><b>08</b>Y sabes cuánto ganaste, sin hacer cuentas</li></ol>
+      </figure>
     </div>
 
     <div class="confianza">
@@ -649,7 +774,8 @@ footer a{color:#fff}
 
 <!-- ===== NadIA ===== -->
 <section class="bloque nadia oscuro" id="nadia" aria-labelledby="nadia-t">
-  <div class="envoltura">
+  <div class="envoltura nadia-rejilla">
+    <div>
     <span class="antetitulo">La asistente</span>
     <h2 id="nadia-t">Pregúntale a NadIA como le preguntarías <span class="resalte">a tu socia</span></h2>
     <p class="entrada">NadIA conoce tus ventas, tus gastos y tu inventario. No tienes que aprender reportes: le escribes y te responde con tus números.</p>
@@ -666,6 +792,23 @@ footer a{color:#fff}
       <a class="boton boton-wa" data-origen="nadia" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Quiero conocer a NadIA</a>
       <a class="boton boton-linea" data-origen="ver-planes" href="https://wa.me/573175126853">Ver planes</a>
     </div>
+      </div>
+    <div class="telefono" aria-label="Ejemplo de conversación con NadIA">
+        <div class="pantalla">
+          <div class="chat-cabeza">
+            <svg class="isotipo" aria-hidden="true"><use href="#isotipo-claro"/></svg>
+            <div><b>NadIA</b><small><span class="en-linea"></span>en línea</small></div>
+          </div>
+          <div class="chat" id="chat">
+            <div class="msj yo">NadIA, ¿cómo vamos hoy?<span class="hora">11:42</span></div>
+            <div class="msj ella">Llevas <mark>$1.284.000</mark> en 63 ventas, 12 % más que el viernes pasado. La de carne va de primera.<span class="hora">11:42</span></div>
+            <div class="msj yo"><span class="adjunto"><i></i>factura_proveedor.pdf</span>Llegó la factura del proveedor<span class="hora">11:45</span></div>
+            <div class="msj ella">Listo, la leí: $412.000 con IVA de $65.782. La dejé como costo y sumé 200 empanadas al inventario.<span class="hora">11:45</span></div>
+            <div class="escribiendo" id="escribiendo" aria-hidden="true"><span></span><span></span><span></span></div>
+          </div>
+          <div class="chat-pie" aria-hidden="true"><div>Escríbele a NadIA…</div><i></i></div>
+        </div>
+      </div>
   </div>
 </section>
 
@@ -894,7 +1037,12 @@ footer a{color:#fff}
       m.classList.add("ver"); i++; setTimeout(siguiente, 900);
     }
   }
-  setTimeout(siguiente, 500);
+  var arrancado = false;
+  function arrancar(){ if (arrancado) return; arrancado = true; setTimeout(siguiente, 300); }
+  if ("IntersectionObserver" in window){
+    var obs = new IntersectionObserver(function(e){ if (e[0].isIntersecting){ arrancar(); obs.disconnect(); } }, {threshold:.35});
+    obs.observe(chat);
+  } else { arrancar(); }
 })();
 </script>
 </body>
