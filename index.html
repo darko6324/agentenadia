@@ -395,7 +395,7 @@ footer a{color:#fff}
         <p class="entrada">Caja, pedidos, domicilios, inventario y factura electrónica en un solo sistema. Y una asistente que te dice cómo va tu negocio en palabras normales.</p>
         <div class="par">
           <a class="boton boton-wa" data-origen="hero" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Quiero verlo en mi negocio</a>
-          <a class="boton boton-linea" href="#que-hace">Ver cómo funciona</a>
+          <a class="boton boton-linea" data-origen="ver-funciona" href="https://wa.me/573175126853">Ver cómo funciona</a>
         </div>
       </div>
 
@@ -546,7 +546,7 @@ footer a{color:#fff}
 
     <div class="par">
       <a class="boton boton-wa" data-origen="recorrido" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Quiero una demostración</a>
-      <a class="boton boton-linea" href="#tu-negocio">¿Sirve para mi negocio?</a>
+      <a class="boton boton-linea" data-origen="sirve-negocio" href="https://wa.me/573175126853">¿Sirve para mi negocio?</a>
     </div>
   </div>
 </section>
@@ -650,7 +650,7 @@ footer a{color:#fff}
     <p class="nadia-nota">Cuando NadIA no está segura de algo, te lo dice. No inventa cifras: todo lo que responde sale de lo que está registrado en tu negocio.</p>
     <div class="par">
       <a class="boton boton-wa" data-origen="nadia" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Quiero conocer a NadIA</a>
-      <a class="boton boton-linea" href="#precios">Ver planes</a>
+      <a class="boton boton-linea" data-origen="ver-planes" href="https://wa.me/573175126853">Ver planes</a>
     </div>
   </div>
 </section>
@@ -799,7 +799,10 @@ footer a{color:#fff}
     "plan-crecimiento": "Hola, me interesa el plan Crecimiento de Agente NadIA.",
     "preguntas": "Hola, tengo una pregunta sobre Agente NadIA.",
     "cierre": "Hola, quiero que me muestren cómo se vería Agente NadIA en mi negocio.",
-    "pie": "Hola, quiero información de Agente NadIA."
+    "pie": "Hola, quiero información de Agente NadIA.",
+    "ver-funciona": "Hola, quiero ver cómo funciona Agente NadIA.",
+    "sirve-negocio": "Hola, quiero saber si Agente NadIA sirve para mi negocio.",
+    "ver-planes": "Hola, quiero conocer los planes y precios de Agente NadIA."
   };
   document.querySelectorAll("a[data-origen]").forEach(function(a){
     var t = textos[a.dataset.origen] || textos.barra;
