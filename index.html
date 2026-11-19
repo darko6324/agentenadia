@@ -30,7 +30,12 @@
   "url": "https://agentenadia.co/",
   "description": "Sistema de punto de venta con factura electrónica DIAN, pedidos, domicilios e inventario, con asistente de inteligencia artificial, para microempresas en Colombia.",
   "areaServed": "CO",
-  "inLanguage": "es-CO"
+  "inLanguage": "es-CO",
+  "offers": [
+    {"@type": "Offer", "name": "Mostrador", "price": "50000", "priceCurrency": "COP"},
+    {"@type": "Offer", "name": "Tienda en línea", "price": "30000", "priceCurrency": "COP"},
+    {"@type": "Offer", "name": "Pedidos y domicilios (complemento)", "price": "15000", "priceCurrency": "COP"}
+  ]
 }
 </script>
 <style>
@@ -289,6 +294,14 @@ p{margin:0}
 .tirilla li span:last-child{font-weight:600;color:var(--verde)}
 .tirilla .boton{width:100%}
 .recomendado{display:inline-block;margin-bottom:14px;background:var(--degradado);color:#fff;font-weight:600;font-size:.82rem;padding:6px 12px;border-radius:999px}
+.tirilla .letra-menuda{font-size:.88rem;color:var(--gris);margin:-10px 0 20px;line-height:1.45}
+.tirilla .valor b{font-size:1.75rem}
+.tirilla li span:first-child{flex:1}
+.tirilla li span:last-child{white-space:nowrap}
+.recomendado.claro{background:var(--menta);color:var(--verde)}
+.tirilla.complemento{background:#FBFDFB;outline:2px dashed var(--salvia);outline-offset:-10px}
+.desde{margin-top:18px;font-size:.98rem;color:#D8C2D9}
+.desde b{color:#fff;font-weight:600}
 .precios-nota{margin-top:40px;color:var(--gris);max-width:70ch}
 
 /* ================= Preguntas ================= */
@@ -397,6 +410,7 @@ footer a{color:#fff}
           <a class="boton boton-wa" data-origen="hero" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Quiero verlo en mi negocio</a>
           <a class="boton boton-linea" data-origen="ver-funciona" href="https://wa.me/573175126853">Ver cómo funciona</a>
         </div>
+        <p class="desde">Planes desde <b>$30.000 al mes</b>. Factura electrónica a <b>$200</b> cada una.</p>
       </div>
 
       <div class="telefono" aria-label="Ejemplo de conversación con NadIA">
@@ -695,48 +709,58 @@ footer a{color:#fff}
 <section class="bloque precios" id="precios" aria-labelledby="precios-t">
   <div class="envoltura">
     <span class="antetitulo">Planes</span>
-    <h2 id="precios-t">Un plan según el <span class="resalte">tamaño de tu negocio</span></h2>
-    <p class="entrada">Pagas mes a mes. Si tu negocio crece, cambias de plan sin perder nada de lo que ya tienes.</p>
+    <h2 id="precios-t">Precios claros, <span class="resalte">en pesos y mes a mes</span></h2>
+    <p class="entrada">Escoge el plan según cómo vendes. Si vendes en local y por internet, tomas los dos. Y si haces domicilios, le sumas el complemento.</p>
     <div class="tirillas">
-      <article class="tirilla">
-        <div class="plan">Arranque</div>
-        <p class="para">Para el que está empezando a ordenarse</p>
-        <div class="valor"><span>Total mes</span><b>Pregúntanos</b></div>
-        <ul>
-          <li><span>Caja y mostrador</span><span>Sí</span></li>
-          <li><span>Inventario</span><span>Sí</span></li>
-          <li><span>Comprobantes de venta</span><span>Sí</span></li>
-          <li><span>Sedes</span><span>1</span></li>
-        </ul>
-        <a class="boton boton-linea" data-origen="plan-arranque" href="https://wa.me/573175126853">Pedir el plan Arranque</a>
-      </article>
       <article class="tirilla destacada">
-        <span class="recomendado">El que más eligen</span>
-        <div class="plan">Negocio</div>
-        <p class="para">Para el que vende en local y a domicilio</p>
-        <div class="valor"><span>Total mes</span><b>Pregúntanos</b></div>
+        <span class="recomendado">Para restaurantes y cafés</span>
+        <div class="plan">Mostrador</div>
+        <p class="para">Para el que atiende en local, con mesas o en barra</p>
+        <div class="valor"><span>Total mes</span><b>$50.000</b></div>
         <ul>
-          <li><span>Todo lo de Arranque</span><span>Sí</span></li>
-          <li><span>Factura electrónica DIAN</span><span>Sí</span></li>
-          <li><span>Pedidos, rutas y domicilios</span><span>Sí</span></li>
+          <li><span>Caja y cobro en mostrador</span><span>Sí</span></li>
+          <li><span>Mesas y cuentas abiertas</span><span>Sí</span></li>
+          <li><span>Inventario que baja con la receta</span><span>Sí</span></li>
+          <li><span>Cierre de caja con arqueo</span><span>Sí</span></li>
           <li><span>NadIA, tu asistente</span><span>Sí</span></li>
+          <li><span>Factura electrónica DIAN</span><span>$200 c/u</span></li>
         </ul>
-        <a class="boton boton-wa" data-origen="plan-negocio" href="https://wa.me/573175126853">Pedir el plan Negocio</a>
+        <p class="letra-menuda">La factura electrónica va por paquetes: cada factura cuesta $200 y solo pagas las que emites. Las ventas con comprobante no consumen facturas.</p>
+        <a class="boton boton-wa" data-origen="plan-mostrador" href="https://wa.me/573175126853">Quiero el plan Mostrador</a>
       </article>
       <article class="tirilla">
-        <div class="plan">Crecimiento</div>
-        <p class="para">Para el que tiene varias sedes o vende en línea</p>
-        <div class="valor"><span>Total mes</span><b>Pregúntanos</b></div>
+        <span class="recomendado claro">Tu tienda en internet</span>
+        <div class="plan">Tienda en línea</div>
+        <p class="para">Para el que vende por redes y quiere su propia tienda, sin pagar en dólares</p>
+        <div class="valor"><span>Total mes</span><b>$30.000</b></div>
         <ul>
-          <li><span>Todo lo de Negocio</span><span>Sí</span></li>
-          <li><span>Varias sedes</span><span>Sí</span></li>
-          <li><span>Tienda en línea</span><span>Sí</span></li>
-          <li><span>Tablero de finanzas</span><span>Sí</span></li>
+          <li><span>Catálogo con fotos y precios</span><span>Sí</span></li>
+          <li><span>Tallas, colores y variantes</span><span>Sí</span></li>
+          <li><span>Enlace para compartir o pegar en tu página</span><span>Sí</span></li>
+          <li><span>Pedidos que llegan listos al sistema</span><span>Sí</span></li>
+          <li><span>Inventario que se aparta con cada pedido</span><span>Sí</span></li>
+          <li><span>Clientes y ventas en el mismo sistema</span><span>Sí</span></li>
         </ul>
-        <a class="boton boton-linea" data-origen="plan-crecimiento" href="https://wa.me/573175126853">Pedir el plan Crecimiento</a>
+        <p class="letra-menuda">Tus productos, tus precios y tus clientes en un solo lugar, con el mismo inventario de tu negocio.</p>
+        <a class="boton boton-linea" data-origen="plan-tienda" href="https://wa.me/573175126853">Quiero mi tienda en línea</a>
+      </article>
+      <article class="tirilla complemento">
+        <span class="recomendado claro">Complemento</span>
+        <div class="plan">Pedidos y domicilios</div>
+        <p class="para">Se suma a cualquiera de los dos planes</p>
+        <div class="valor"><span>Adicional al mes</span><b>+$15.000</b></div>
+        <ul>
+          <li><span>Pedidos por teléfono o WhatsApp</span><span>Sí</span></li>
+          <li><span>Cotizaciones para tus clientes</span><span>Sí</span></li>
+          <li><span>Ruta del día con un botón</span><span>Sí</span></li>
+          <li><span>Entrega confirmada con foto</span><span>Sí</span></li>
+          <li><span>Enlace de seguimiento para el cliente</span><span>Sí</span></li>
+        </ul>
+        <p class="letra-menuda">Ejemplo: Mostrador + Pedidos y domicilios = $65.000 al mes.</p>
+        <a class="boton boton-linea" data-origen="plan-domicilios" href="https://wa.me/573175126853">Agregar domicilios</a>
       </article>
     </div>
-    <p class="precios-nota">Te damos el valor exacto por WhatsApp según cuántas cajas, sedes y usuarios necesitas.</p>
+    <p class="precios-nota">Precios en pesos colombianos. Te dejamos todo configurado y te acompañamos por WhatsApp.</p>
   </div>
 </section>
 
@@ -752,6 +776,8 @@ footer a{color:#fff}
     <div class="faq-lista">
       <details><summary>¿Necesito comprar un computador o una caja especial?</summary><p>No. Funciona desde el navegador del celular, la tablet o el computador que ya tienes. Si quieres imprimir tirillas, sirve una impresora térmica de 58 mm.</p></details>
       <details><summary>¿Me sirve si todavía no facturo electrónicamente?</summary><p>Sí. Puedes empezar vendiendo con comprobantes y activar la factura electrónica cuando estés listo. Te acompañamos en la habilitación ante la DIAN.</p></details>
+      <details><summary>¿Cómo funcionan los paquetes de facturas electrónicas?</summary><p>Cada factura electrónica cuesta $200 y compras paquetes según lo que necesites. Solo se descuentan las facturas que emites; las ventas con comprobante no consumen facturas. Si el cliente no pide factura, no gastas nada.</p></details>
+      <details><summary>¿En qué se diferencia la tienda en línea de Shopify?</summary><p>Pagas $30.000 al mes en pesos, no en dólares, y la tienda usa el mismo inventario y los mismos clientes de tu negocio: lo que vendes por internet y en el local queda en un solo lugar. Te la dejamos montada y te atendemos por WhatsApp, en español.</p></details>
       <details><summary>¿Y si no sé nada de tecnología?</summary><p>Está pensado para ti. Las pantallas hablan en español sencillo, cuando algo no se puede hacer te dicen por qué, y lo que no entiendas se lo preguntas a NadIA o a nosotros por WhatsApp.</p></details>
       <details><summary>¿Para qué tipo de negocio sirve?</summary><p>Comidas y restaurantes, tiendas, panaderías, cafés, ventas por catálogo y negocios con domicilios. Si vendes productos y quieres saber cuánto te queda, sirve.</p></details>
       <details><summary>¿Mis datos están seguros?</summary><p>Tu información vive en la nube de Google, con acceso por usuario y contraseña. Cada persona de tu equipo ve solo lo que tú le permites, y tus datos no se mezclan con los de otro negocio.</p></details>
@@ -794,9 +820,9 @@ footer a{color:#fff}
     "negocio-panaderia": "Hola, tengo una panadería o café y quiero saber cómo me sirve Agente NadIA.",
     "negocio-redes": "Hola, vendo por redes y quiero saber cómo me sirve Agente NadIA.",
     "nadia": "Hola, quiero conocer a NadIA, la asistente de Agente NadIA.",
-    "plan-arranque": "Hola, me interesa el plan Arranque de Agente NadIA.",
-    "plan-negocio": "Hola, me interesa el plan Negocio de Agente NadIA.",
-    "plan-crecimiento": "Hola, me interesa el plan Crecimiento de Agente NadIA.",
+    "plan-mostrador": "Hola, me interesa el plan Mostrador de Agente NadIA ($50.000 al mes).",
+    "plan-tienda": "Hola, me interesa el plan Tienda en línea de Agente NadIA ($30.000 al mes).",
+    "plan-domicilios": "Hola, quiero agregar Pedidos y domicilios a mi plan de Agente NadIA.",
     "preguntas": "Hola, tengo una pregunta sobre Agente NadIA.",
     "cierre": "Hola, quiero que me muestren cómo se vería Agente NadIA en mi negocio.",
     "pie": "Hola, quiero información de Agente NadIA.",
