@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agente NadIA · Sistema POS con factura electrónica para microempresas</title>
+<meta name="description" content="Caja, pedidos, domicilios, inventario y factura electrónica DIAN en un solo sistema, con una asistente que te responde cuánto vendiste. Para microempresarios en Colombia.">
+<meta property="og:title" content="Agente NadIA · Tu negocio, desde el celular">
+<meta property="og:description" content="Vende, factura ante la DIAN y entérate de cuánto ganaste, sin dejar el celular.">
+<meta property="og:url" content="https://agentenadia.co/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<link rel="canonical" href="https://agentenadia.co/">
+<meta property="og:image" content="https://agentenadia.co/img/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon_32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="img/favicon_192.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="theme-color" content="#200422">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Agente NadIA",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web, Android, iOS",
+  "url": "https://agentenadia.co/",
+  "description": "Sistema de punto de venta con factura electrónica DIAN, pedidos, domicilios e inventario, con asistente de inteligencia artificial, para microempresas en Colombia.",
+  "areaServed": "CO",
+  "inLanguage": "es-CO"
+}
+</script>
+<style>
+/* ---------- Tokens ---------- */
+:root{
+  --petroleo:#200422;
+  --petroleo-2:#3E0043;
+  --papel:#F6FCF7;
+  --blanco:#FFFFFF;
+  --grafito:#2E212F;
+  --gris:#56635A;
+  --menta:#E3EFE5;
+  --salvia:#A8C7AD;
+  --verde-hondo:#235430;
+  --rosa:#ECD5ED;
+  --marcador:#ECD5ED;
+  --marca:#AC00B8;
+  --marca-200:#F0CEF2;
+  --marca-800:#610068;
+  --lila-brillo:rgba(172,0,184,.45);
+  --wa:#178544;      /* botón WhatsApp (contraste AA con blanco) */
+  --wa-hover:#126B37;
+  --linea:#DCE8DE;
+
+  --f-titulo:"Bricolage Grotesque", system-ui, sans-serif;
+  --f-texto:"Atkinson Hyperlegible", system-ui, sans-serif;
+
+  --t-0:1rem;      /* 16 */
+  --t-1:1.125rem;  /* 18 */
+  --t-2:1.375rem;  /* 22 */
+  --t-3:1.75rem;   /* 28 */
+  --t-4:2.375rem;  /* 38 */
+  --t-5:clamp(2.4rem, 5.2vw, 4.1rem);
+
+  --ancho:1140px;
+  --r-s:8px;
+  --r-m:16px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  margin:0;background:var(--papel);color:var(--grafito);
+  font-family:var(--f-texto);font-size:var(--t-1);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-titulo);line-height:1.08;margin:0;color:var(--petroleo);letter-spacing:-.015em}
+h2{font-size:var(--t-4);font-weight:800;max-width:22ch}
+h3{font-size:var(--t-2);font-weight:700;letter-spacing:-.005em}
+p{margin:0}
+.envoltura{max-width:var(--ancho);margin:0 auto;padding:0 24px}
+.bloque{padding:96px 0}
+.entrada{color:var(--gris);font-size:var(--t-1);max-width:58ch;margin-top:16px}
+:focus-visible{outline:3px solid var(--marcador);outline-offset:3px;border-radius:4px}
+.solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Marcas de borrador: lo que David debe completar */
+.pendiente{background:#FFE066;color:var(--petroleo);padding:0 .3em;border-radius:3px;font-weight:700}
+
+/* ---------- Botones ---------- */
+.boton{
+  display:inline-flex;align-items:center;gap:10px;
+  font:700 var(--t-1)/1 var(--f-texto);text-decoration:none;
+  padding:16px 24px;border-radius:999px;border:2px solid transparent;cursor:pointer;
+  transition:background-color .15s ease, transform .15s ease;
+}
+.boton svg{width:22px;height:22px;flex:none}
+.boton-wa{background:var(--wa);color:#fff}
+.boton-wa:hover{background:var(--wa-hover)}
+.boton-wa:active{transform:scale(.98)}
+.boton-linea{border-color:currentColor;color:var(--petroleo);background:transparent}
+.boton-linea:hover{background:var(--menta)}
+.boton-chico{padding:11px 18px;font-size:var(--t-0)}
+
+/* ---------- Barra superior ---------- */
+.barra{
+  position:sticky;top:0;z-index:20;background:rgba(34,0,37,.88);
+  backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid rgba(255,255,255,.08);
+}
+.barra .envoltura{display:flex;align-items:center;justify-content:space-between;height:68px;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-titulo);font-weight:800;font-size:1.3rem;color:var(--petroleo)}
+.logo-marca{width:34px;height:34px;border-radius:10px 10px 10px 3px;background:var(--petroleo);display:grid;place-items:center}
+.logo-marca span{width:12px;height:12px;border-radius:50%;background:var(--marcador)}
+.logo b{font-weight:800}
+.menu{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.menu a{text-decoration:none;font-size:var(--t-0);color:var(--grafito)}
+.menu a:hover{color:var(--petroleo);text-decoration:underline;text-underline-offset:4px}
+
+/* ---------- Hero ---------- */
+.hero{padding:72px 0 88px;overflow:hidden}
+.hero .envoltura{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:var(--t-5);font-weight:800;max-width:15ch}
+.hero .entrada{font-size:var(--t-2);line-height:1.45;color:var(--grafito);margin-top:24px;max-width:34ch}
+.acciones{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.prueba{margin-top:28px;display:flex;flex-direction:column;gap:10px;padding:0;list-style:none;font-size:var(--t-0);color:var(--gris)}
+.prueba li{display:flex;gap:10px;align-items:flex-start}
+.prueba svg{width:20px;height:20px;flex:none;margin-top:3px;color:var(--wa)}
+.prueba strong{color:var(--grafito)}
+
+/* Teléfono con la conversación */
+.telefono{
+  justify-self:center;width:min(100%,380px);background:var(--petroleo);
+  border-radius:36px;padding:12px;box-shadow:0 0 0 1px rgba(209,118,215,.40), 0 30px 80px -20px rgba(172,0,184,.55);
+  transform:rotate(1.5deg);
+}
+.pantalla{background:#F6FCF7;border-radius:26px;overflow:hidden;display:flex;flex-direction:column;height:620px}
+.chat-cabeza{background:var(--petroleo-2);color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--marcador);display:grid;place-items:center;font-family:var(--f-titulo);font-weight:800;color:var(--petroleo)}
+.chat-cabeza b{display:block;font-size:var(--t-0)}
+.chat-cabeza small{opacity:.8;font-size:.82rem}
+.chat{flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:10px;overflow:hidden;justify-content:flex-end}
+.msj{color:var(--grafito);max-width:84%;padding:10px 13px;border-radius:14px;font-size:.95rem;line-height:1.42;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.msj.yo{align-self:flex-end;background:var(--menta);border-bottom-right-radius:4px}
+.msj.ella{align-self:flex-start;background:#fff;border-bottom-left-radius:4px}
+.msj .hora{display:block;text-align:right;font-size:.72rem;color:var(--gris);margin-top:2px}
+.msj .adjunto{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.7);border-radius:8px;padding:8px;margin-bottom:6px;font-size:.85rem}
+.msj .adjunto i{width:28px;height:34px;border-radius:4px;background:repeating-linear-gradient(#fff 0 4px,#cfd9d6 4px 5px);border:1px solid #cfd9d6;flex:none}
+.msj mark{background:var(--rosa);color:var(--marca-800);padding:0 3px;border-radius:3px;font-weight:700}
+.escribiendo{align-self:flex-start;background:#fff;border-radius:14px;padding:12px 14px;display:none;gap:4px}
+.escribiendo span{width:7px;height:7px;border-radius:50%;background:#9AABA8;animation:salto 1s infinite}
+.escribiendo span:nth-child(2){animation-delay:.15s}
+.escribiendo span:nth-child(3){animation-delay:.3s}
+@keyframes salto{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.chat-pie{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff}
+.chat-pie div{flex:1;background:#F1F4F3;border-radius:999px;padding:10px 14px;color:#8A9896;font-size:.9rem}
+.chat-pie i{width:38px;height:38px;border-radius:50%;background:var(--wa)}
+
+/* La conversación aparece una sola vez al cargar */
+.js .chat .msj{opacity:0;transform:translateY(8px)}
+.js .chat .msj.ver{opacity:1;transform:none;transition:opacity .35s ease, transform .35s ease}
+
+/* ---------- Dolor ---------- */
+.dolor{background:var(--blanco);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.dolor-rejilla{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:48px}
+.dolor-item h3{font-size:var(--t-2)}
+.dolor-item p{color:var(--gris);margin-top:10px}
+.tachado{text-decoration:line-through;text-decoration-color:var(--wa);text-decoration-thickness:3px;color:var(--gris)}
+.dolor-cierre{margin-top:48px;font-family:var(--f-titulo);font-size:var(--t-3);font-weight:700;color:var(--petroleo);max-width:30ch;line-height:1.2}
+
+/* ---------- Qué hace (por momentos del día) ---------- */
+.momentos{margin-top:56px;display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:2px solid var(--petroleo)}
+.momento{padding:32px 32px 32px 0;border-bottom:1px solid var(--linea);display:grid;grid-template-columns:56px 1fr;gap:18px}
+.momento:nth-child(odd){border-right:1px solid var(--linea)}
+.momento:nth-child(even){padding-left:32px}
+.icono{width:48px;height:48px;border-radius:14px;background:var(--menta);display:grid;place-items:center;color:var(--petroleo)}
+.icono svg{width:26px;height:26px}
+.momento p{color:var(--gris);margin-top:8px;max-width:44ch}
+.etiqueta-pronto{display:inline-block;margin-left:8px;font:700 .78rem/1 var(--f-texto);background:var(--marcador);color:var(--petroleo);padding:5px 8px;border-radius:999px;vertical-align:middle;letter-spacing:0}
+
+/* ---------- NadIA ---------- */
+.nadia{background:var(--petroleo);color:#EFE3EF}
+.nadia h2,.nadia h3{color:#fff}
+.nadia .entrada{color:#D8C2D9}
+.preguntas-nadia{margin-top:48px;display:flex;flex-wrap:wrap;gap:12px;list-style:none;padding:0;max-width:900px}
+.preguntas-nadia li{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:12px 20px;font-size:var(--t-1)}
+.preguntas-nadia li::before{content:"“";color:var(--marcador);font-weight:700;margin-right:2px}
+.preguntas-nadia li::after{content:"”";color:var(--marcador);font-weight:700;margin-left:2px}
+.nadia-nota{margin-top:40px;max-width:60ch;color:#D8C2D9}
+
+/* ---------- Caso real ---------- */
+.caso .envoltura{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start}
+.caso-lista{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:28px}
+.caso-lista li{padding-left:24px;border-left:4px solid var(--marcador)}
+.caso-lista strong{display:block;font-family:var(--f-titulo);font-size:var(--t-2);color:var(--petroleo);line-height:1.2}
+.caso-lista span{color:var(--gris);display:block;margin-top:6px}
+
+/* ---------- Pasos (secuencia real) ---------- */
+.pasos{list-style:none;padding:0;margin:56px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:paso}
+.paso{counter-increment:paso;position:relative;padding-top:64px}
+.paso::before{
+  content:counter(paso);position:absolute;top:0;left:0;width:48px;height:48px;border-radius:50%;
+  background:var(--petroleo);color:var(--marcador);display:grid;place-items:center;
+  font:800 var(--t-2)/1 var(--f-titulo);
+}
+.paso:not(:last-child)::after{content:"";position:absolute;top:24px;left:60px;right:-20px;height:2px;background:repeating-linear-gradient(90deg,var(--petroleo) 0 6px,transparent 6px 12px)}
+.paso p{color:var(--gris);margin-top:10px}
+
+/* ---------- Precios como tirillas ---------- */
+.precios{background:#EAF2EB;border-top:1px solid var(--linea)}
+.tirillas{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:start}
+.tirilla{
+  --diente:10px;
+  background:#FFFFFF;padding:32px 28px 40px;position:relative;
+  font-size:var(--t-0);
+  filter:drop-shadow(0 10px 18px rgba(34,0,37,.14));
+  -webkit-mask: conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50% / calc(2*var(--diente)) 100%;
+          mask: conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50% / calc(2*var(--diente)) 100%;
+}
+.tirilla.destacada{background:#E3EFE5;transform:translateY(-12px)}
+.tirilla .plan{font-family:var(--f-titulo);font-weight:800;font-size:var(--t-3);color:var(--petroleo)}
+.tirilla .para{color:var(--gris);margin-top:4px}
+.tirilla .valor{margin:22px 0 18px;padding:14px 0;border-top:1px dashed #B8C6C3;border-bottom:1px dashed #B8C6C3;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.tirilla .valor b{font-family:var(--f-titulo);font-size:var(--t-3);color:var(--petroleo)}
+.tirilla ul{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:9px}
+.tirilla li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted #D3DCDA;padding-bottom:7px}
+.tirilla li span:last-child{font-weight:700;color:var(--petroleo)}
+.tirilla .boton{width:100%;justify-content:center}
+.recomendado{display:inline-block;margin-bottom:14px;background:var(--petroleo);color:#fff;font-weight:700;font-size:.82rem;padding:6px 12px;border-radius:999px}
+.precios-nota{margin-top:40px;color:var(--gris);max-width:70ch}
+
+/* ---------- Preguntas ---------- */
+.faq-lista{margin-top:40px;max-width:820px;border-top:2px solid var(--petroleo)}
+.faq-lista details{border-bottom:1px solid var(--linea)}
+.faq-lista summary{
+  cursor:pointer;list-style:none;padding:22px 44px 22px 0;position:relative;
+  font-family:var(--f-titulo);font-weight:700;font-size:var(--t-2);color:var(--petroleo);line-height:1.25;
+}
+.faq-lista summary::-webkit-details-marker{display:none}
+.faq-lista summary::after{content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:1.8rem;font-weight:500;transition:transform .2s ease}
+.faq-lista details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq-lista details p{padding:0 0 24px;color:var(--gris);max-width:66ch}
+
+/* ---------- Cierre ---------- */
+.cierre{background:var(--marca);color:#fff}
+.cierre h2{color:#fff}
+.cierre .boton-wa{background:#fff;color:var(--wa-hover)}
+.cierre .boton-wa:hover{background:var(--marca-200)}
+.cierre .envoltura{display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap}
+.cierre h2{max-width:18ch}
+.cierre p{margin-top:12px;color:#FEE3FF;font-size:var(--t-1)}
+.cierre .boton-wa{font-size:var(--t-2);padding:20px 30px}
+
+footer{background:var(--petroleo);color:#D8C2D9;padding:48px 0 120px;font-size:var(--t-0)}
+footer .envoltura{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer a{color:#fff}
+
+/* Barra fija de WhatsApp en celular */
+.wa-fija{display:none}
+
+
+/* ---------- Capa digital: barra y hero oscuros ---------- */
+.logo{color:#fff}
+.logo-marca{background:var(--marca)}
+.logo-marca span{background:#fff}
+.menu a{color:#D8C2D9}
+.menu a:hover{color:#fff}
+.hero{
+  background:
+    radial-gradient(600px 420px at 78% 45%, var(--lila-brillo), transparent 70%),
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px) 0 0/44px 44px,
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px) 0 0/44px 44px,
+    var(--petroleo);
+  color:#EFE3EF;
+}
+.hero h1{color:#fff}
+.hero .entrada{color:#E2D0E3}
+.hero .boton-linea{color:#fff;border-color:rgba(255,255,255,.5)}
+.hero .boton-linea:hover{background:rgba(255,255,255,.08)}
+.hero .prueba{color:#D8C2D9}
+.hero .prueba strong{color:#fff}
+.hero .prueba svg{color:var(--marcador)}
+.telefono{background:var(--petroleo-2)}
+.chat-cabeza{background:var(--petroleo)}
+.en-linea{display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ADE80;margin-right:6px;vertical-align:middle}
+.preguntas-nadia li{background:rgba(209,118,215,.12);border-color:rgba(209,118,215,.35)}
+.paso::before{color:var(--marcador)}
+
+
+/* ---------- Paleta B: complementaria serena ---------- */
+.icono{background:var(--menta);color:var(--verde-hondo)}
+.momentos{border-top-color:var(--verde-hondo)}
+.faq-lista{border-top-color:var(--verde-hondo)}
+.caso-lista li{border-left-color:var(--marca)}
+.hero .prueba svg{color:var(--salvia)}
+.chat-pie i{background:var(--wa)}
+.boton-linea:hover{background:var(--menta)}
+.recomendado{background:var(--verde-hondo)}
+.tirilla li span:last-child{color:var(--verde-hondo)}
+.paso::before{background:var(--marca);color:#fff}
+.paso:not(:last-child)::after{background:repeating-linear-gradient(90deg,var(--salvia) 0 6px,transparent 6px 12px)}
+.tachado{text-decoration-color:var(--marca)}
+
+/* ---------- Responsivo ---------- */
+@media (max-width:960px){
+  .hero .envoltura,.caso .envoltura{grid-template-columns:1fr}
+  .telefono{transform:none}
+  .tirillas{grid-template-columns:1fr;max-width:440px}
+  .tirilla.destacada{transform:none}
+  .dolor-rejilla,.pasos{grid-template-columns:1fr}
+  .paso:not(:last-child)::after{display:none}
+  .momentos{grid-template-columns:1fr}
+  .momento,.momento:nth-child(even){padding:28px 0;border-right:0}
+}
+@media (max-width:720px){
+  .menu{display:none}
+  .bloque{padding:72px 0}
+  .hero{padding:40px 0 64px}
+  .pantalla{height:560px}
+  .wa-fija{
+    display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:30;
+    justify-content:center;box-shadow:0 10px 30px -8px rgba(0,0,0,.35);
+  }
+  .barra .boton-chico{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .chat .msj{opacity:1;transform:none}
+  .escribiendo span{animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="solo-lector" href="#contenido">Ir al contenido</a>
+
+<header class="barra">
+  <div class="envoltura">
+    <a class="logo" href="#" aria-label="Agente NadIA, inicio">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="38" height="38" aria-hidden="true" focusable="false"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#6B2BD9"/><stop offset="1" stop-color="#AC00B8"/></linearGradient></defs><path d="M 42.2 88.6 A 38 38 0 1 0 27.1 74.0 L 17 106 Z" fill="none" stroke="url(#lgA)" stroke-width="13" stroke-linejoin="round" stroke-linecap="round"/><polyline points="40,56 53,69 79,42" fill="none" stroke="#A8C7AD" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="82.2" y1="92.5" x2="83.2" y2="98.0" stroke="url(#lgA)" stroke-width="4.4" stroke-linecap="round"/><circle cx="83.8" cy="104.5" r="6.2" fill="none" stroke="url(#lgA)" stroke-width="4.4"/></svg>
+      <span>Agente Nad<b style="color:#D176D7">IA</b></span>
+    </a>
+    <nav aria-label="Principal">
+      <ul class="menu">
+        <li><a href="#que-hace">Qué hace</a></li>
+        <li><a href="#nadia">La asistente</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#preguntas">Preguntas</a></li>
+      </ul>
+    </nav>
+    <a class="boton boton-wa boton-chico" data-origen="barra" href="https://wa.me/573175126853">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5 0a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>
+      Hablar con ventas
+    </a>
+  </div>
+</header>
+
+<main id="contenido">
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="envoltura">
+    <div>
+      <h1>Vende, factura y sabe cuánto ganaste, sin soltar el celular.</h1>
+      <p class="entrada">Caja, pedidos, domicilios, inventario y factura electrónica DIAN en un solo sistema. Y una asistente que te contesta cómo va tu negocio en palabras normales.</p>
+      <div class="acciones">
+        <a class="boton boton-wa" data-origen="hero" href="https://wa.me/573175126853">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5 0a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>
+          Quiero verlo en mi negocio
+        </a>
+        <a class="boton boton-linea" href="#que-hace">Ver qué hace</a>
+      </div>
+      <ul class="prueba">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg><span><strong>Nació en un negocio de verdad:</strong> lo usa todos los días La Empanada Guerrera, en Bogotá.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg><span><strong>Facturas aceptadas por la DIAN</strong> a través de un proveedor tecnológico autorizado.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg><span>Te responde una persona por WhatsApp, no un formulario.</span></li>
+      </ul>
+    </div>
+
+    <div class="telefono" aria-label="Ejemplo de conversación con NadIA">
+      <div class="pantalla">
+        <div class="chat-cabeza">
+          <div class="avatar" aria-hidden="true">N</div>
+          <div><b>NadIA</b><small><span class="en-linea"></span>en línea</small></div>
+        </div>
+        <div class="chat" id="chat">
+          <div class="msj yo">NadIA, ¿cómo vamos hoy?<span class="hora">11:42</span></div>
+          <div class="msj ella">Llevas <mark>$1.284.000</mark> en 63 ventas, 12 % más que el viernes pasado. La de carne va de primera.<span class="hora">11:42</span></div>
+          <div class="msj yo"><span class="adjunto"><i></i>factura_proveedor.pdf</span>Llegó la factura del proveedor<span class="hora">11:45</span></div>
+          <div class="msj ella">Listo, la leí: $412.000 con IVA de $65.782. La dejé como costo y sumé 200 empanadas al inventario.<span class="hora">11:45</span></div>
+          <div class="escribiendo" id="escribiendo" aria-hidden="true"><span></span><span></span><span></span></div>
+        </div>
+        <div class="chat-pie" aria-hidden="true"><div>Escríbele a NadIA…</div><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Dolor ===== -->
+<section class="bloque dolor" aria-labelledby="dolor-t">
+  <div class="envoltura">
+    <h2 id="dolor-t">Tu negocio vende. El problema es saber cuánto te queda.</h2>
+    <div class="dolor-rejilla">
+      <div class="dolor-item">
+        <h3><span class="tachado">El cuaderno</span></h3>
+        <p>Las ventas anotadas a mano, el fiado en la memoria y las cuentas de fin de mes que nunca cuadran.</p>
+      </div>
+      <div class="dolor-item">
+        <h3><span class="tachado">El chat revuelto</span></h3>
+        <p>Pedidos que llegan por WhatsApp, se pierden entre mensajes y el domiciliario sale sin saber el orden.</p>
+      </div>
+      <div class="dolor-item">
+        <h3><span class="tachado">La DIAN encima</span></h3>
+        <p>La factura electrónica es obligatoria y los sistemas que hay parecen hechos para contadores, no para ti.</p>
+      </div>
+    </div>
+    <p class="dolor-cierre">Agente NadIA junta todo eso en un solo lugar y te lo explica sin tecnicismos.</p>
+  </div>
+</section>
+
+<!-- ===== Qué hace ===== -->
+<section class="bloque" id="que-hace" aria-labelledby="hace-t">
+  <div class="envoltura">
+    <h2 id="hace-t">Todo lo que pasa en tu día, en un solo sistema</h2>
+    <p class="entrada">Funciona en el celular, la tablet o el computador. Tú y tu equipo entran con su propio usuario y cada uno ve solo lo que le toca.</p>
+
+    <div class="momentos">
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+        <div><h3>Cobrar en mostrador</h3><p>Vende con un toque, recibe efectivo, tarjeta, transferencia o QR, imprime la tirilla y cierra la caja con arqueo al final del turno.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <div><h3>Facturar ante la DIAN</h3><p>Factura electrónica o comprobante, tú decides. El sistema calcula IVA o INC y la envía. Si algo falla, te dice por qué.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 18h7M3 6h10v9M13 9h4l3 4v2"/></svg></div>
+        <div><h3>Pedidos y domicilios</h3><p>Arma la ruta del día con un botón, el domiciliario marca cada entrega con foto y tu cliente sigue su pedido en línea con el número.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></div>
+        <div><h3>Inventario que se descuenta solo</h3><p>Cada venta baja lo que gastaste según la receta. Ves qué se acaba, qué está quieto y cuánto vale lo que tienes en bodega.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h3l2-3h6l2 3h3v12H4Z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+        <div><h3>Gastos con una foto</h3><p>Le mandas a NadIA la factura del proveedor y ella la lee, encuentra al proveedor y la registra como costo o gasto.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+        <div><h3>Saber si estás ganando</h3><p>Estado de resultados, margen por producto, punto de equilibrio y tus mejores clientes, en gráficas que se entienden.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18l-1.5 11h-15Z"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/></svg></div>
+        <div><h3>Tu tienda en internet</h3><p>Un catálogo con fotos y precios que pegas en tu página o compartes por enlace. El cliente arma su pedido y te llega listo.</p></div>
+      </div>
+      <div class="momento">
+        <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></div>
+        <div><h3>Avisos por WhatsApp <span class="etiqueta-pronto">Muy pronto</span></h3><p>Tu cliente recibe «pedido confirmado», «va en camino» y «entregado» sin que tengas que escribir cada mensaje.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NadIA ===== -->
+<section class="bloque nadia" id="nadia" aria-labelledby="nadia-t">
+  <div class="envoltura">
+    <h2 id="nadia-t">Pregúntale a NadIA como le preguntarías a tu socia</h2>
+    <p class="entrada">NadIA conoce tus ventas, tus gastos y tu inventario. No tienes que aprender reportes: le escribes y te responde con tus números.</p>
+    <ul class="preguntas-nadia">
+      <li>¿Cuánto vendí esta semana contra la pasada?</li>
+      <li>¿Qué producto me deja más plata?</li>
+      <li>¿Qué me falta pedir?</li>
+      <li>¿Quién es mi mejor cliente?</li>
+      <li>¿Cuánto gasté en domicilios este mes?</li>
+      <li>Carga esta factura</li>
+    </ul>
+    <p class="nadia-nota">Cuando NadIA no está segura de algo, te lo dice. No inventa cifras: todo lo que responde sale de lo que está registrado en tu negocio.</p>
+  </div>
+</section>
+
+<!-- ===== Caso real ===== -->
+<section class="bloque caso" aria-labelledby="caso-t">
+  <div class="envoltura">
+    <div>
+      <h2 id="caso-t">No es una idea en papel. Lo hicimos para nuestro propio negocio.</h2>
+      <p class="entrada">Agente NadIA nació en La Empanada Guerrera, un local de empanadas con domicilios y venta de congeladas a otros negocios en Bogotá. Hoy también lo usa una marca de lencería que vende por internet.</p>
+    </div>
+    <ul class="caso-lista">
+      <li><strong>Mostrador, domicilios y venta al por mayor</strong><span>Tres formas de vender, cada una con sus precios e impuestos, en el mismo sistema.</span></li>
+      <li><strong>Factura electrónica emitida y aceptada por la DIAN</strong><span>Con numeración propia y consecutivos que el sistema lleva solo.</span></li>
+      <li><strong>Facturas de proveedores leídas por NadIA</strong><span>Los gastos históricos del negocio se cargaron leyendo las facturas electrónicas, sin digitarlas una por una.</span></li>
+      <li><strong>Una tienda en línea con talla y color</strong><span>La marca de lencería vende con variantes y el inventario se reserva cuando entra el pedido.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== Cómo empiezas ===== -->
+<section class="bloque" aria-labelledby="pasos-t" style="padding-top:0">
+  <div class="envoltura">
+    <h2 id="pasos-t">Empezar te toma una conversación</h2>
+    <ol class="pasos">
+      <li class="paso"><h3>Nos escribes</h3><p>Por WhatsApp nos cuentas qué vendes, cómo cobras y si ya facturas electrónicamente.</p></li>
+      <li class="paso"><h3>Te lo dejamos listo</h3><p>Cargamos tus productos, precios y usuarios, y te ayudamos con la factura electrónica.</p></li>
+      <li class="paso"><h3>Vendes desde el primer día</h3><p>Te mostramos cómo usarlo con tu equipo y seguimos pendientes por WhatsApp.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== Precios ===== -->
+<section class="bloque precios" id="precios" aria-labelledby="precios-t">
+  <div class="envoltura">
+    <h2 id="precios-t">Un precio claro, según el tamaño de tu negocio</h2>
+    <p class="entrada">Pagas mes a mes. Si tu negocio crece, cambias de plan sin perder nada de lo que ya tienes.</p>
+
+    <div class="tirillas">
+      <article class="tirilla">
+        <div class="plan">Arranque</div>
+        <p class="para">Para el que está empezando a ordenarse</p>
+        <div class="valor"><span>Total mes</span><b><span class="pendiente">$ —</span></b></div>
+        <ul>
+          <li><span>Caja y mostrador</span><span>Sí</span></li>
+          <li><span>Inventario</span><span>Sí</span></li>
+          <li><span>Comprobantes de venta</span><span>Sí</span></li>
+          <li><span>Usuarios</span><span class="pendiente">—</span></li>
+          <li><span>Sedes</span><span>1</span></li>
+        </ul>
+        <a class="boton boton-linea" data-origen="plan-arranque" href="https://wa.me/573175126853">Pedir el plan Arranque</a>
+      </article>
+
+      <article class="tirilla destacada">
+        <span class="recomendado">El que más eligen</span>
+        <div class="plan">Negocio</div>
+        <p class="para">Para el que vende en local y a domicilio</p>
+        <div class="valor"><span>Total mes</span><b><span class="pendiente">$ —</span></b></div>
+        <ul>
+          <li><span>Todo lo de Arranque</span><span>Sí</span></li>
+          <li><span>Factura electrónica DIAN</span><span>Sí</span></li>
+          <li><span>Pedidos, rutas y domicilios</span><span>Sí</span></li>
+          <li><span>NadIA, tu asistente</span><span>Sí</span></li>
+          <li><span>Usuarios</span><span class="pendiente">—</span></li>
+        </ul>
+        <a class="boton boton-wa" data-origen="plan-negocio" href="https://wa.me/573175126853">Pedir el plan Negocio</a>
+      </article>
+
+      <article class="tirilla">
+        <div class="plan">Crecimiento</div>
+        <p class="para">Para el que tiene varias sedes o vende en línea</p>
+        <div class="valor"><span>Total mes</span><b><span class="pendiente">$ —</span></b></div>
+        <ul>
+          <li><span>Todo lo de Negocio</span><span>Sí</span></li>
+          <li><span>Varias sedes</span><span>Sí</span></li>
+          <li><span>Tienda en línea</span><span>Sí</span></li>
+          <li><span>Tablero de finanzas</span><span>Sí</span></li>
+          <li><span>Usuarios</span><span class="pendiente">—</span></li>
+        </ul>
+        <a class="boton boton-linea" data-origen="plan-crecimiento" href="https://wa.me/573175126853">Pedir el plan Crecimiento</a>
+      </article>
+    </div>
+    <p class="precios-nota">Los precios incluyen IVA. <span class="pendiente">Confirmar: cuántas facturas electrónicas incluye cada plan y si hay costo de instalación.</span></p>
+  </div>
+</section>
+
+<!-- ===== Preguntas ===== -->
+<section class="bloque" id="preguntas" aria-labelledby="faq-t">
+  <div class="envoltura">
+    <h2 id="faq-t">Lo que nos preguntan antes de empezar</h2>
+    <div class="faq-lista">
+      <details>
+        <summary>¿Necesito comprar un computador o una caja especial?</summary>
+        <p>No. Funciona desde el navegador del celular, la tablet o el computador que ya tienes. Si quieres imprimir tirillas, sirve una impresora térmica de 58 mm.</p>
+      </details>
+      <details>
+        <summary>¿Me sirve si todavía no facturo electrónicamente?</summary>
+        <p>Sí. Puedes empezar vendiendo con comprobantes y activar la factura electrónica cuando estés listo. Te acompañamos en la habilitación ante la DIAN.</p>
+      </details>
+      <details>
+        <summary>¿Y si no sé nada de tecnología?</summary>
+        <p>Está pensado para ti. Las pantallas hablan en español sencillo, cuando algo no se puede hacer te dicen por qué, y lo que no entiendas se lo preguntas a NadIA o a nosotros por WhatsApp.</p>
+      </details>
+      <details>
+        <summary>¿Para qué tipo de negocio sirve?</summary>
+        <p>Comidas y restaurantes, tiendas, panaderías, cafés, ventas por catálogo y negocios con domicilios. Si vendes productos y quieres saber cuánto te queda, sirve.</p>
+      </details>
+      <details>
+        <summary>¿Mis datos están seguros?</summary>
+        <p>Tu información vive en la nube de Google, con acceso por usuario y contraseña. Cada persona de tu equipo ve solo lo que tú le permites, y tus datos no se mezclan con los de otro negocio.</p>
+      </details>
+      <details>
+        <summary>¿Hay contrato de permanencia?</summary>
+        <p><span class="pendiente">Por definir: escribir aquí la condición real (por ejemplo, mes a mes y cancelas cuando quieras).</span></p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Cierre ===== -->
+<section class="bloque cierre" aria-labelledby="cierre-t">
+  <div class="envoltura">
+    <div>
+      <h2 id="cierre-t">Muéstranos cómo vendes hoy y te decimos cómo se vería mañana.</h2>
+      <p>Te responde una persona del equipo, de lunes a sábado.</p>
+    </div>
+    <a class="boton boton-wa" data-origen="cierre" href="https://wa.me/573175126853">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5 0a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>
+      Escribir al 317 512 6853
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="envoltura">
+    <div><strong style="color:#fff">Agente NadIA</strong><br>Sistema de punto de venta para microempresarios en Colombia.</div>
+    <div>Ventas: <a data-origen="pie" href="https://wa.me/573175126853">WhatsApp 317 512 6853</a><br><a href="#">Política de tratamiento de datos</a></div>
+  </div>
+</footer>
+
+<a class="boton boton-wa wa-fija" data-origen="barra-celular" href="https://wa.me/573175126853">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5 0a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>
+  Hablar por WhatsApp
+</a>
+
+<script>
+/* Mensaje prellenado según el botón, para saber de dónde llega cada cliente */
+(function(){
+  var NUMERO = "573175126853";
+  var textos = {
+    "hero": "Hola, vi Agente NadIA y quiero verlo funcionando en mi negocio.",
+    "barra": "Hola, quiero información de Agente NadIA.",
+    "barra-celular": "Hola, quiero información de Agente NadIA.",
+    "plan-arranque": "Hola, me interesa el plan Arranque de Agente NadIA.",
+    "plan-negocio": "Hola, me interesa el plan Negocio de Agente NadIA.",
+    "plan-crecimiento": "Hola, me interesa el plan Crecimiento de Agente NadIA.",
+    "cierre": "Hola, quiero que me muestren cómo se vería Agente NadIA en mi negocio.",
+    "pie": "Hola, quiero información de Agente NadIA."
+  };
+  document.querySelectorAll("a[data-origen]").forEach(function(a){
+    var t = textos[a.dataset.origen] || textos.barra;
+    a.href = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(t);
+    a.target = "_blank"; a.rel = "noopener";
+    a.addEventListener("click", function(){
+      /* Si se instala GA4/GTM, este evento mide qué botón convierte */
+      if (window.dataLayer) window.dataLayer.push({event:"clic_whatsapp", origen:a.dataset.origen});
+    });
+  });
+})();
+
+/* La conversación del teléfono se arma una sola vez al cargar */
+(function(){
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var msjs = Array.prototype.slice.call(document.querySelectorAll("#chat .msj"));
+  var esc = document.getElementById("escribiendo");
+  var chat = document.getElementById("chat");
+  var i = 0;
+  function siguiente(){
+    if (i >= msjs.length) return;
+    var m = msjs[i];
+    var deElla = m.classList.contains("ella");
+    if (deElla){
+      chat.insertBefore(esc, m); esc.style.display = "flex";
+      setTimeout(function(){ esc.style.display = "none"; m.classList.add("ver"); i++; setTimeout(siguiente, 700); }, 1100);
+    } else {
+      m.classList.add("ver"); i++; setTimeout(siguiente, 900);
+    }
+  }
+  setTimeout(siguiente, 500);
+})();
+</script>
+</body>
+</html>
