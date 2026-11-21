@@ -1045,5 +1045,194 @@ footer a{color:#fff}
   } else { arrancar(); }
 })();
 </script>
+<!-- ===== Chat con NadIA (aparece solo cuando el servicio responde) ===== -->
+<style>
+.cn-boton{position:fixed;right:24px;bottom:24px;z-index:60;width:68px;height:68px;border-radius:50%;border:0;padding:0;cursor:pointer;background:transparent;box-shadow:0 12px 32px -8px rgba(172,0,184,.6);display:none;transition:transform .2s ease}
+.cn-boton.ver{display:block}
+.cn-boton:hover{transform:scale(1.06)}
+.cn-boton img{width:68px;height:68px;border-radius:50%;display:block}
+.cn-boton::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(209,118,215,.55);animation:cn-pulso 2.4s ease-out infinite}
+@keyframes cn-pulso{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.cn-nube{position:fixed;right:102px;bottom:40px;z-index:60;background:#fff;color:var(--tinta);font:500 .98rem/1.35 var(--f);padding:12px 16px;border-radius:16px 16px 4px 16px;box-shadow:0 12px 30px -10px rgba(32,4,34,.35);display:none;max-width:230px;cursor:pointer}
+.cn-nube.ver{display:block;animation:cn-entra .35s ease}
+@keyframes cn-entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.cn-panel{position:fixed;right:24px;bottom:104px;z-index:61;width:380px;height:min(600px,calc(100vh - 130px));background:var(--papel);border-radius:20px;box-shadow:0 30px 80px -20px rgba(32,4,34,.55),0 0 0 1px rgba(32,4,34,.08);display:none;flex-direction:column;overflow:hidden;font-family:var(--f)}
+.cn-panel.ver{display:flex;animation:cn-entra .25s ease}
+.cn-cabeza{background:var(--tinta);color:#fff;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px}
+.cn-cabeza img{width:44px;height:44px;border-radius:50%}
+.cn-cabeza b{display:block;font-weight:600;font-size:1.05rem}
+.cn-cabeza small{font-size:.82rem;color:#D8C2D9}
+.cn-cerrar{margin-left:auto;background:transparent;border:0;color:#fff;width:40px;height:40px;border-radius:10px;cursor:pointer;font-size:1.5rem;line-height:1}
+.cn-cerrar:hover{background:rgba(255,255,255,.1)}
+.cn-msjs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.cn-m{max-width:86%;padding:10px 13px;border-radius:16px;font-size:.98rem;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;color:var(--grafito)}
+.cn-m.n{align-self:flex-start;background:#fff;border-bottom-left-radius:4px;box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.cn-m.u{align-self:flex-end;background:var(--menta);border-bottom-right-radius:4px}
+.cn-wa{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;text-decoration:none;font-weight:600;padding:11px 16px;border-radius:12px}
+.cn-wa:hover{background:var(--wa-hover)}
+.cn-wa svg{width:20px;height:20px}
+.cn-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 10px}
+.cn-chip{border:1px solid rgba(172,0,184,.35);background:#fff;color:var(--marca-800);font:500 .9rem/1.2 var(--f);padding:8px 12px;border-radius:999px;cursor:pointer}
+.cn-chip:hover{background:var(--marca-200)}
+.cn-escribe{align-self:flex-start;background:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:4px}
+.cn-escribe span{width:7px;height:7px;border-radius:50%;background:#B9A3BA;animation:salto 1s infinite}
+.cn-escribe span:nth-child(2){animation-delay:.15s}.cn-escribe span:nth-child(3){animation-delay:.3s}
+.cn-pie{border-top:1px solid var(--linea);background:#fff;padding:10px 12px 8px}
+.cn-form{display:flex;gap:8px;align-items:flex-end}
+.cn-form textarea{flex:1;resize:none;border:1px solid var(--linea);border-radius:14px;padding:11px 13px;font:400 1rem/1.35 var(--f);color:var(--grafito);max-height:120px;background:var(--papel)}
+.cn-form textarea:focus{outline:2px solid var(--marca-claro);outline-offset:0;border-color:transparent}
+.cn-enviar{width:44px;height:44px;border-radius:50%;border:0;background:var(--degradado);color:#fff;cursor:pointer;flex:none;display:grid;place-items:center}
+.cn-enviar:disabled{opacity:.5;cursor:default}
+.cn-enviar svg{width:20px;height:20px}
+.cn-aviso{font-size:.74rem;color:var(--gris);margin-top:6px;text-align:center}
+@media (max-width:720px){
+  .cn-boton{right:16px;bottom:84px;width:60px;height:60px}
+  .cn-boton img{width:60px;height:60px}
+  .cn-nube{right:88px;bottom:96px}
+  .cn-panel{left:8px;right:8px;bottom:8px;width:auto;height:min(82vh,640px)}
+  body.cn-abierto .wa-fija{display:none}
+}
+@media (prefers-reduced-motion:reduce){.cn-boton::after{animation:none;display:none}.cn-panel.ver,.cn-nube.ver{animation:none}}
+</style>
+
+<button class="cn-boton" id="cn-boton" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="cn-panel" aria-label="Habla con NadIA, la asistente">
+  <img src="img/nadia-128.png" srcset="img/nadia-128.png 1x, img/nadia-256.png 2x" alt="" width="68" height="68">
+</button>
+<div class="cn-nube" id="cn-nube" role="status">¿Tienes dudas? Pregúntame 👋</div>
+
+<section class="cn-panel" id="cn-panel" role="dialog" aria-modal="false" aria-labelledby="cn-titulo">
+  <div class="cn-cabeza">
+    <img src="img/nadia-128.png" alt="" width="44" height="44">
+    <div><b id="cn-titulo">NadIA</b><small><span class="en-linea"></span>Asistente de Agente NadIA</small></div>
+    <button class="cn-cerrar" id="cn-cerrar" type="button" aria-label="Cerrar el chat">×</button>
+  </div>
+  <div class="cn-msjs" id="cn-msjs" aria-live="polite"></div>
+  <div class="cn-chips" id="cn-chips">
+    <button class="cn-chip" type="button">¿Cuánto cuesta?</button>
+    <button class="cn-chip" type="button">Tengo un restaurante</button>
+    <button class="cn-chip" type="button">Vendo por redes</button>
+    <button class="cn-chip" type="button">¿Cómo funciona la factura electrónica?</button>
+  </div>
+  <div class="cn-pie">
+    <form class="cn-form" id="cn-form">
+      <label class="solo-lector" for="cn-texto">Escríbele a NadIA</label>
+      <textarea id="cn-texto" rows="1" maxlength="600" placeholder="Escribe tu pregunta…" autocomplete="off"></textarea>
+      <button class="cn-enviar" id="cn-enviar" type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </form>
+    <p class="cn-aviso">NadIA usa inteligencia artificial. Guardamos esta conversación para atenderte mejor.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var API = "https://emision-539643945772.us-east1.run.app/api/ventas/chat";
+  var NUMERO = "573175126853";
+  var SALUDO = "¡Hola! Soy NadIA 👋 Te cuento lo que quieras de Agente NadIA: planes, factura electrónica, domicilios o tienda en línea. ¿Qué tipo de negocio tienes?";
+  var boton = document.getElementById("cn-boton"), panel = document.getElementById("cn-panel"),
+      nube = document.getElementById("cn-nube"), msjs = document.getElementById("cn-msjs"),
+      chips = document.getElementById("cn-chips"), form = document.getElementById("cn-form"),
+      campo = document.getElementById("cn-texto"), enviar = document.getElementById("cn-enviar");
+  var historia = [], ocupado = false, abierto = false;
+
+  function guardado(k, v){ try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch(e){ return null; } }
+  function medir(ev, extra){ if (window.dataLayer) window.dataLayer.push(Object.assign({event: ev}, extra || {})); }
+  var sesion = guardado("cn_sesion");
+  if (!sesion){ sesion = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ("s" + Date.now() + Math.random().toString(36).slice(2, 10)); guardado("cn_sesion", sesion); }
+  try { historia = JSON.parse(guardado("cn_historia") || "[]"); } catch(e){ historia = []; }
+
+  function wa(texto){
+    var a = document.createElement("a");
+    a.className = "cn-wa"; a.target = "_blank"; a.rel = "noopener";
+    a.href = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(texto);
+    a.innerHTML = '<svg aria-hidden="true"><use href="#wa"/></svg>Seguir por WhatsApp';
+    a.addEventListener("click", function(){ medir("clic_whatsapp", {origen: "chat-nadia"}); });
+    return a;
+  }
+  function pintar(rol, texto, waTexto){
+    var d = document.createElement("div");
+    d.className = "cn-m " + (rol === "usuario" ? "u" : "n");
+    d.textContent = texto;
+    msjs.appendChild(d);
+    if (waTexto) msjs.appendChild(wa(waTexto));
+    msjs.scrollTop = msjs.scrollHeight;
+  }
+  function escribiendo(si){
+    var e = document.getElementById("cn-escribe");
+    if (si && !e){ e = document.createElement("div"); e.id = "cn-escribe"; e.className = "cn-escribe"; e.innerHTML = "<span></span><span></span><span></span>"; msjs.appendChild(e); msjs.scrollTop = msjs.scrollHeight; }
+    if (!si && e) e.remove();
+  }
+  function inicio(){
+    msjs.innerHTML = "";
+    pintar("nadia", SALUDO);
+    historia.forEach(function(m){ pintar(m.rol, m.texto, m.wa); });
+    chips.style.display = historia.length ? "none" : "";
+  }
+
+  function abrir(){
+    abierto = true; nube.classList.remove("ver");
+    panel.classList.add("ver"); boton.setAttribute("aria-expanded", "true");
+    document.body.classList.add("cn-abierto");
+    if (!msjs.childElementCount) inicio();
+    setTimeout(function(){ campo.focus(); }, 50);
+    medir("abrir_chat_nadia");
+  }
+  function cerrar(){
+    abierto = false; panel.classList.remove("ver"); boton.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("cn-abierto"); boton.focus();
+  }
+
+  function mandar(texto){
+    texto = (texto || "").trim();
+    if (!texto || ocupado) return;
+    ocupado = true; enviar.disabled = true; chips.style.display = "none";
+    historia.push({rol: "usuario", texto: texto});
+    pintar("usuario", texto);
+    campo.value = ""; campo.style.height = "";
+    escribiendo(true);
+    medir("mensaje_chat_nadia");
+    var cuerpo = {sesion: sesion, pagina: location.pathname, mensajes: historia.slice(-14).map(function(m){ return {rol: m.rol, texto: m.texto}; })};
+    fetch(API, {method: "POST", headers: {"content-type": "text/plain;charset=UTF-8"}, body: JSON.stringify(cuerpo)})
+      .then(function(r){ return r.json().catch(function(){ return {}; }); })
+      .then(function(j){
+        var texto = j.texto || j.error || "No alcancé a responderte. Escríbenos por WhatsApp y te atiende una persona.";
+        var waTexto = j.whatsapp ? j.whatsapp.texto : (j.texto ? null : "Hola, vengo del chat de la página de Agente NadIA.");
+        historia.push({rol: "nadia", texto: texto, wa: waTexto || undefined});
+        escribiendo(false); pintar("nadia", texto, waTexto);
+      })
+      .catch(function(){
+        var t = "Se me fue la conexión. Escríbenos por WhatsApp y te atiende una persona del equipo.";
+        var w = "Hola, vengo del chat de la página de Agente NadIA.";
+        historia.push({rol: "nadia", texto: t, wa: w});
+        escribiendo(false); pintar("nadia", t, w);
+      })
+      .then(function(){
+        ocupado = false; enviar.disabled = false;
+        guardado("cn_historia", JSON.stringify(historia.slice(-30)));
+        if (abierto) campo.focus();
+      });
+  }
+
+  boton.addEventListener("click", function(){ abierto ? cerrar() : abrir(); });
+  nube.addEventListener("click", abrir);
+  document.getElementById("cn-cerrar").addEventListener("click", cerrar);
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && abierto) cerrar(); });
+  form.addEventListener("submit", function(e){ e.preventDefault(); mandar(campo.value); });
+  campo.addEventListener("keydown", function(e){ if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); mandar(campo.value); } });
+  campo.addEventListener("input", function(){ campo.style.height = ""; campo.style.height = Math.min(campo.scrollHeight, 120) + "px"; });
+  Array.prototype.forEach.call(chips.querySelectorAll(".cn-chip"), function(c){ c.addEventListener("click", function(){ mandar(c.textContent); }); });
+
+  // El botón aparece solo si el chat está disponible: si el servicio no
+  // responde, la página sigue funcionando con sus botones de WhatsApp.
+  var forzar = /[?&]nadia=1\b/.test(location.search);
+  fetch(API, {method: "GET"}).then(function(r){ if (r.ok) mostrar(); else if (forzar) mostrar(); }).catch(function(){ if (forzar) mostrar(); });
+  function mostrar(){
+    boton.classList.add("ver");
+    if (!guardado("cn_nube")){
+      setTimeout(function(){ if (!abierto){ nube.classList.add("ver"); guardado("cn_nube", "1"); setTimeout(function(){ nube.classList.remove("ver"); }, 9000); } }, 7000);
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
