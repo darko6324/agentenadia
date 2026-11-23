@@ -109,6 +109,46 @@ p{margin:0}
 .menu a{text-decoration:none;font-size:.98rem;color:#C6D6E4}
 .menu a:hover{color:#fff}
 
+/* ================= Cuenta (crear / iniciar sesión) ================= */
+:root{--indigo:#1A4E6D;--azul-cielo:#B1D0EA;--vino:#A32179;--vino-hover:#900D69;--vino-oscuro:#E07AB8;--noche:#002539}
+.cuenta-barra{display:flex;align-items:center;gap:8px;flex:none}
+.barra .boton-chico{white-space:nowrap;padding:10px 14px;font-size:.92rem}
+.menu a,.logo{white-space:nowrap}
+.boton-contorno{border-color:var(--indigo);color:var(--indigo);background:transparent}
+.boton-contorno:hover{background:var(--menta)}
+.oscuro .boton-contorno,.barra .boton-contorno,footer .boton-contorno{border-color:var(--azul-cielo);color:var(--azul-cielo)}
+.oscuro .boton-contorno:hover,.barra .boton-contorno:hover{background:rgba(177,208,234,.12)}
+.boton-cuenta{background:var(--wa);color:var(--noche)}
+.boton-cuenta:hover{background:var(--wa-hover)}
+.menu-boton{display:none;align-items:center;gap:8px;background:transparent;border:2px solid rgba(255,255,255,.3);color:#fff;font:600 .95rem/1 var(--f);padding:10px 14px;border-radius:10px;cursor:pointer}
+.menu-boton svg{width:20px;height:20px}
+.menu-movil{display:none}
+.cuenta-linea{margin-top:16px;font-size:.98rem;color:#C6D6E4}
+.cuenta-linea a{color:var(--vino-oscuro);font-weight:600;text-underline-offset:3px}
+.cuenta-linea a:hover{color:#FFA2D7}
+.cuenta-linea .sep{margin:0 8px;opacity:.5}
+.empieza .pasos .paso::before{background:var(--vino)}
+.empieza .pasos .pronto{vertical-align:middle}
+.empieza .acciones{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:44px}
+.empieza .acciones a.texto{color:var(--vino);font-weight:600;text-underline-offset:3px}
+.empieza .acciones a.texto:hover{color:var(--vino-hover)}
+.empieza .legal{margin-top:18px;font-size:.92rem;color:var(--gris)}
+.empieza .legal a{color:var(--vino);text-underline-offset:3px}
+.pie-cuenta{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+@media (max-width:1300px){.menu{gap:18px}.menu a{font-size:.92rem}.barra .envoltura{gap:16px}}
+@media (max-width:1240px){.barra .boton-wa.boton-chico{padding:10px;font-size:0;gap:0}.barra .boton-wa.boton-chico svg{width:22px;height:22px}}
+@media (max-width:1060px){.barra .boton-wa.boton-chico{display:none}}
+@media (max-width:900px){
+  .barra nav,.cuenta-barra{display:none}
+  .menu-boton{display:inline-flex}
+  .menu-movil{position:absolute;top:68px;left:0;right:0;background:var(--noche);border-bottom:1px solid rgba(255,255,255,.12);padding:12px 24px 22px;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+  .menu-movil.abierto{display:block}
+  .menu-movil .boton{width:100%;margin-top:10px}
+  .menu-movil ul{list-style:none;margin:0 0 8px;padding:0}
+  .menu-movil li a{display:block;padding:12px 0;color:#DCE7F1;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.08)}
+}
+@media (max-width:720px){.empieza .acciones .boton{width:100%}}
+
 /* ================= Hero ================= */
 .oscuro{background:var(--tinta);color:var(--texto-oscuro)}
 .oscuro h1,.oscuro h2,.oscuro h3{color:#fff}
@@ -430,7 +470,23 @@ footer a{color:#fff}
         <li><a href="#preguntas">Preguntas</a></li>
       </ul>
     </nav>
-    <a class="boton boton-wa boton-chico" data-origen="barra" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Hablar con ventas</a>
+    <div class="cuenta-barra">
+      <a class="boton boton-contorno boton-chico" data-cuenta="iniciar" data-cuenta-origen="barra" href="https://app.agentenadia.co">Iniciar sesión</a>
+      <a class="boton boton-cuenta boton-chico" data-cuenta="crear" data-cuenta-origen="barra" href="https://app.agentenadia.co/empezar">Crear mi cuenta</a>
+      <a class="boton boton-wa boton-chico" data-origen="barra" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Hablar con ventas</a>
+    </div>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-movil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menú</button>
+  </div>
+  <div class="menu-movil" id="menu-movil">
+    <ul>
+      <li><a href="#que-hace">Qué hace</a></li>
+      <li><a href="#tu-negocio">Para tu negocio</a></li>
+      <li><a href="#nadia">La asistente</a></li>
+      <li><a href="#precios">Planes</a></li>
+      <li><a href="#preguntas">Preguntas</a></li>
+    </ul>
+    <a class="boton boton-cuenta" data-cuenta="crear" data-cuenta-origen="barra" href="https://app.agentenadia.co/empezar">Crear mi cuenta</a>
+    <a class="boton boton-contorno" data-cuenta="iniciar" data-cuenta-origen="barra" href="https://app.agentenadia.co">Iniciar sesión</a>
   </div>
 </header>
 
@@ -448,6 +504,7 @@ footer a{color:#fff}
           <a class="boton boton-wa" data-origen="hero" href="https://wa.me/573175126853"><svg aria-hidden="true"><use href="#wa"/></svg>Quiero verlo en mi negocio</a>
           <a class="boton boton-linea" data-origen="ver-funciona" href="https://wa.me/573175126853">Ver cómo funciona</a>
         </div>
+        <p class="cuenta-linea">¿Ya quieres empezar? <a data-cuenta="crear" data-cuenta-origen="hero" href="https://app.agentenadia.co/empezar">Crea tu cuenta</a><span class="sep" aria-hidden="true">·</span><a data-cuenta="iniciar" data-cuenta-origen="hero" href="https://app.agentenadia.co">Ya tengo cuenta</a></p>
         <p class="desde">Planes desde <b>$30.000 al mes</b>. Factura electrónica a <b>$200</b> cada una.</p>
       </div>
 
@@ -929,6 +986,24 @@ footer a{color:#fff}
 </section>
 
 <!-- ===== Cierre ===== -->
+<!-- ===== Empieza en 3 pasos (cuenta) ===== -->
+<section class="bloque empieza" id="empezar" aria-labelledby="empieza-t">
+  <div class="envoltura">
+    <span class="antetitulo">Empieza en 3 pasos</span>
+    <h2 id="empieza-t">Empieza hoy, <span class="resalte">a tu ritmo</span></h2>
+    <ol class="pasos">
+      <li class="paso"><h3>Crea tu cuenta</h3><p>Cuéntanos tu nombre, tu negocio y tu WhatsApp. Entras con tu correo y una clave.</p></li>
+      <li class="paso"><h3>NadIA te recibe</h3><p>Entras a tu propia empresa dentro de la plataforma, con NadIA como guía.</p></li>
+      <li class="paso"><h3>Carga tu negocio <em class="pronto">Muy pronto</em></h3><p>Tu menú, tu inventario y tus cuentas.</p></li>
+    </ol>
+    <div class="acciones">
+      <a class="boton boton-cuenta" data-cuenta="crear" data-cuenta-origen="pasos" href="https://app.agentenadia.co/empezar">Crear mi cuenta</a>
+      <a class="texto" data-cuenta="iniciar" data-cuenta-origen="pasos" href="https://app.agentenadia.co">Ya tengo cuenta, iniciar sesión</a>
+    </div>
+    <p class="legal">Al crear tu cuenta aceptas el tratamiento de tus datos. Léelo en nuestra <a href="https://agentenadia.co/politica-de-datos.html">política de datos</a>.</p>
+  </div>
+</section>
+
 <section class="bloque cierre" aria-labelledby="cierre-t">
   <div class="envoltura">
     <div>
@@ -943,7 +1018,8 @@ footer a{color:#fff}
 <footer>
   <div class="envoltura">
     <div style="display:flex;gap:12px;align-items:center"><svg width="40" height="40" aria-hidden="true"><use href="#isotipo"/></svg><div><strong style="color:#fff;font-weight:600">Agente NadIA</strong><br>Sistema de punto de venta para microempresarios en Colombia.</div></div>
-    <div>Ventas: <a data-origen="pie" href="https://wa.me/573175126853">WhatsApp 317 512 6853</a><br><a href="politica-de-datos.html">Política de tratamiento de datos</a></div>
+    <div>Ventas: <a data-origen="pie" href="https://wa.me/573175126853">WhatsApp 317 512 6853</a><br><a href="politica-de-datos.html">Política de tratamiento de datos</a>
+      <div class="pie-cuenta"><a data-cuenta="iniciar" data-cuenta-origen="pie" href="https://app.agentenadia.co">Iniciar sesión</a><a data-cuenta="crear" data-cuenta-origen="pie" href="https://app.agentenadia.co/empezar">Crear mi cuenta</a></div></div>
   </div>
 </footer>
 
@@ -981,6 +1057,26 @@ footer a{color:#fff}
       if (window.dataLayer) window.dataLayer.push({event:"clic_whatsapp", origen:a.dataset.origen});
     });
   });
+})();
+
+/* Crear cuenta / iniciar sesión: enlaces a la app y medición */
+(function(){
+  window.dataLayer = window.dataLayer || [];
+  document.querySelectorAll("a[data-cuenta]").forEach(function(a){
+    a.addEventListener("click", function(){
+      window.dataLayer.push({event: a.dataset.cuenta === "crear" ? "clic_crear_cuenta" : "clic_iniciar_sesion", origen: a.dataset.cuentaOrigen});
+    });
+  });
+  var boton = document.querySelector(".menu-boton"), panel = document.getElementById("menu-movil");
+  if (boton && panel) {
+    function cerrar(){ panel.classList.remove("abierto"); boton.setAttribute("aria-expanded","false"); }
+    boton.addEventListener("click", function(){
+      var abierto = panel.classList.toggle("abierto");
+      boton.setAttribute("aria-expanded", abierto ? "true" : "false");
+    });
+    panel.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener("click", cerrar); });
+    document.addEventListener("keydown", function(e){ if (e.key === "Escape" && panel.classList.contains("abierto")) { cerrar(); boton.focus(); } });
+  }
 })();
 
 /* Pestañas accesibles (recorrido y tipo de negocio) */
